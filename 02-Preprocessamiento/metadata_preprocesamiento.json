@@ -1,0 +1,59 @@
+{
+  "dataset_info": {
+    "total_registros": 17558,
+    "total_features": 25,
+    "feature_names": [
+      "servicio_urgente",
+      "critico",
+      "desc_longitud",
+      "desc_num_palabras",
+      "desc_contiene_instalación",
+      "desc_contiene_problema",
+      "desc_contiene_componente",
+      "desc_contiene_conexión",
+      "desc_contiene_falla",
+      "desc_contiene_arranque",
+      "desc_contiene_error",
+      "desc_contiene_funciona",
+      "desc_contiene_revisar",
+      "desc_contiene_piezas",
+      "tipo_trabajo_encoded",
+      "tipo_cliente_encoded",
+      "producto_encoded",
+      "fuente_encoded",
+      "urgente_x_tipo_trabajo",
+      "urgente_x_cliente",
+      "critico_x_tipo_trabajo",
+      "indice_prioridad",
+      "desc_es_largo",
+      "desc_muchas_palabras",
+      "urgente_desc_largo"
+    ]
+  },
+  "class_distribution": {
+    "class_0": 16309,
+    "class_1": 1249,
+    "ratio_desbalance": 13.057646116893515
+  },
+  "train_test_split": {
+    "train_size": 14046,
+    "test_size": 3512,
+    "train_class_0": 13047,
+    "train_class_1": 999,
+    "test_class_0": 3262,
+    "test_class_1": 250
+  },
+  "oversampling_applied": true,
+  "class_weights": {
+    "class_0": 0.5382846631409519,
+    "class_1": 7.03003003003003
+  },
+  "scaler_type": "MinMaxScaler [0,1]",
+  "encoding_strategy": {
+    "tipo_trabajo": "Target Encoding",
+    "tipo_cliente": "Label Encoding",
+    "producto": "Label Encoding",
+    "fuente": "Label Encoding",
+    "boolean_columns": "Kept as binary (0/1)"
+  }
+}

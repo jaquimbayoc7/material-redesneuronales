@@ -1,0 +1,214 @@
+
+================================================================================
+XGBOOST BASELINE - REPORTE DE EVALUACIÓN
+================================================================================
+
+Fecha: 2026-02-24 15:25:57
+
+
+================================================================================
+1. DESCRIPCIÓN DEL PROBLEMA
+================================================================================
+
+Variable Target: Propenso_a_Fallar
+  • Clase 0: No fallo (servicios completados exitosamente)
+  • Clase 1: Fallo (servicios donde ocurrió un fallo)
+
+Objetivo: Predecir cuáles servicios de reparación pueden fallar usando XGBoost.
+
+
+================================================================================
+2. DATOS Y PREPARACIÓN
+================================================================================
+
+Dataset Total:
+  • Total registros: 29,606
+  • Features: 25
+  • Clase 0 (No fallo): 16,309
+  • Clase 1 (Fallo): 13,297
+
+Preprocesamiento (Fase 1):
+  • Normalización: MinMaxScaler [0,1]
+  • Oversampling: RandomOverSampler (aplicado en train)
+  • Encoding: Target Encoding + Label Encoding
+
+Splits Evaluados:
+  • 60-40: 60% train, 40% validation
+  • 70-30: 70% train, 30% validation
+  • 80-20: 80% train, 20% validation
+
+
+================================================================================
+3. CONFIGURACIÓN DEL MODELO
+================================================================================
+
+Algoritmo: XGBoost (eXtreme Gradient Boosting)
+
+Parámetros:
+  • objective: binary:logistic
+  • max_depth: 5
+  • learning_rate: 0.05
+  • n_estimators: 200
+  • min_child_weight: 1
+  • subsample: 0.8
+  • colsample_bytree: 0.8
+  • gamma: 0
+  • reg_alpha: 0
+  • reg_lambda: 1
+  • random_state: 42
+  • verbosity: 0
+  • eval_metric: logloss
+
+
+================================================================================
+4. RESULTADOS POR SPLIT
+================================================================================
+
+
+60-40 SPLIT
+--------------------------------------------------
+
+Métricas de Evaluación:
+  • Accuracy:     0.9438
+  • Precision:    0.9131
+  • Recall:       0.9808
+  • F1-Score:     0.9458
+  • AUC-ROC:      0.9835
+  • Specificity:  0.9067
+  • Sensitivity:  0.9808
+
+Confusion Matrix:
+[[4732  487]
+ [ 100 5119]]
+
+Interpretación:
+  • Verdaderos Negativos (TN): 4732
+  • Falsos Positivos (FP): 487
+  • Falsos Negativos (FN): 100
+  • Verdaderos Positivos (TP): 5119
+
+Reporte Detallado:
+              precision    recall  f1-score   support
+
+           0       0.98      0.91      0.94      5219
+           1       0.91      0.98      0.95      5219
+
+    accuracy                           0.94     10438
+   macro avg       0.95      0.94      0.94     10438
+weighted avg       0.95      0.94      0.94     10438
+
+
+
+70-30 SPLIT
+--------------------------------------------------
+
+Métricas de Evaluación:
+  • Accuracy:     0.9464
+  • Precision:    0.9171
+  • Recall:       0.9813
+  • F1-Score:     0.9482
+  • AUC-ROC:      0.9852
+  • Specificity:  0.9114
+  • Sensitivity:  0.9813
+
+Confusion Matrix:
+[[3568  347]
+ [  73 3841]]
+
+Interpretación:
+  • Verdaderos Negativos (TN): 3568
+  • Falsos Positivos (FP): 347
+  • Falsos Negativos (FN): 73
+  • Verdaderos Positivos (TP): 3841
+
+Reporte Detallado:
+              precision    recall  f1-score   support
+
+           0       0.98      0.91      0.94      3915
+           1       0.92      0.98      0.95      3914
+
+    accuracy                           0.95      7829
+   macro avg       0.95      0.95      0.95      7829
+weighted avg       0.95      0.95      0.95      7829
+
+
+
+80-20 SPLIT
+--------------------------------------------------
+
+Métricas de Evaluación:
+  • Accuracy:     0.9435
+  • Precision:    0.9115
+  • Recall:       0.9824
+  • F1-Score:     0.9456
+  • AUC-ROC:      0.9833
+  • Specificity:  0.9046
+  • Sensitivity:  0.9824
+
+Confusion Matrix:
+[[2361  249]
+ [  46 2563]]
+
+Interpretación:
+  • Verdaderos Negativos (TN): 2361
+  • Falsos Positivos (FP): 249
+  • Falsos Negativos (FN): 46
+  • Verdaderos Positivos (TP): 2563
+
+Reporte Detallado:
+              precision    recall  f1-score   support
+
+           0       0.98      0.90      0.94      2610
+           1       0.91      0.98      0.95      2609
+
+    accuracy                           0.94      5219
+   macro avg       0.95      0.94      0.94      5219
+weighted avg       0.95      0.94      0.94      5219
+
+
+
+================================================================================
+5. COMPARATIVA Y MEJOR MODELO
+================================================================================
+
+Comparativa por AUC-ROC:
+  2. Split 70-30: AUC-ROC=0.9852, F1=0.9482, Accuracy=0.9464
+  1. Split 60-40: AUC-ROC=0.9835, F1=0.9458, Accuracy=0.9438
+  3. Split 80-20: AUC-ROC=0.9833, F1=0.9456, Accuracy=0.9435
+
+
+🏆 MEJOR MODELO SELECCIONADO: Split 70-30
+   • AUC-ROC: 0.9852
+   • F1-Score: 0.9482
+   • Accuracy: 0.9464
+
+
+================================================================================
+6. ANÁLISIS E INTERPRETACIÓN
+================================================================================
+
+✅ Fortalezas del Modelo:
+   • El modelo captura patrones de fallo en servicios
+   • AUC-ROC consistente indicaría buen poder discriminativo
+   • Feature Importance revela predictores clave del fallo
+
+⚠️  Consideraciones:
+   • Desbalance de clases en datos originales afecta métricas
+   • Recall vs Precision trade-off según aplicación
+   • Necesario validación en datos reales de test
+
+
+================================================================================
+7. PRÓXIMOS PASOS
+================================================================================
+
+1. Validar mejor modelo en dataset de test
+2. Realizar tuning de hiperparámetros
+3. Explorar otros algoritmos (LightGBM, CatBoost)
+4. Implementar validación cruzada
+5. Análisis de feature importance vs negocio
+
+
+================================================================================
+FIN DEL REPORTE
+================================================================================

@@ -1,0 +1,128 @@
+{
+  "fecha_ejecucion": "2026-02-24 15:37:37",
+  "fase": 3,
+  "modelo": "Deep Learning - Red Neuronal Profunda",
+  "problema": {
+    "target": "Propenso_a_Fallar",
+    "clase_0": "No fallo",
+    "clase_1": "Fallo",
+    "descripcion": "Predicción de propensión a fallar en servicios de reparación"
+  },
+  "datos": {
+    "total_registros": 29606,
+    "total_features": 25,
+    "clase_0_total": 16309,
+    "clase_1_total": 13297
+  },
+  "arquitectura": {
+    "capas": [
+      {
+        "tipo": "Input",
+        "dim": 25
+      },
+      {
+        "tipo": "Dense",
+        "units": 256,
+        "activation": "relu",
+        "regularization": "L2(0.001)"
+      },
+      {
+        "tipo": "BatchNormalization"
+      },
+      {
+        "tipo": "Dropout",
+        "rate": 0.4
+      },
+      {
+        "tipo": "Dense",
+        "units": 128,
+        "activation": "relu",
+        "regularization": "L2(0.001)"
+      },
+      {
+        "tipo": "BatchNormalization"
+      },
+      {
+        "tipo": "Dropout",
+        "rate": 0.3
+      },
+      {
+        "tipo": "Dense",
+        "units": 64,
+        "activation": "relu"
+      },
+      {
+        "tipo": "Dropout",
+        "rate": 0.2
+      },
+      {
+        "tipo": "Dense",
+        "units": 32,
+        "activation": "relu"
+      },
+      {
+        "tipo": "Dropout",
+        "rate": 0.2
+      },
+      {
+        "tipo": "Dense",
+        "units": 16,
+        "activation": "relu"
+      },
+      {
+        "tipo": "Dense",
+        "units": 1,
+        "activation": "sigmoid"
+      }
+    ]
+  },
+  "hiperparametros": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "loss": "binary_crossentropy",
+    "batch_size": 32,
+    "epochs": 75,
+    "early_stopping": "patience=15",
+    "reduce_lr": "factor=0.5, patience=5",
+    "class_weights": {
+      "0": 0.6,
+      "1": 1.4
+    }
+  },
+  "entrenamiento": {
+    "epochs_entrenadas": 75,
+    "mejor_epoch": 60,
+    "early_stopping_activado": true,
+    "loss_final_train": 0.17554308474063873,
+    "loss_final_val": 0.12719054520130157,
+    "accuracy_final_train": 0.9093173742294312,
+    "accuracy_final_val": 0.9883119463920593,
+    "auc_final_train": 0.9718124866485596,
+    "auc_final_val": 0.0
+  },
+  "resultados_test": {
+    "accuracy": 0.8758542141230068,
+    "precision": 0.35993975903614456,
+    "recall": 0.956,
+    "f1_score": 0.5229759299781181,
+    "auc_roc": 0.9672127529123238,
+    "specificity": 0.8697118332311465,
+    "sensitivity": 0.956,
+    "confusion_matrix": {
+      "tn": 2837,
+      "fp": 425,
+      "fn": 11,
+      "tp": 239
+    }
+  },
+  "comparativa_baseline": {
+    "xgboost_accuracy": 0.9463533018265423,
+    "xgboost_auc_roc": 0.9852332492131269,
+    "deeplearning_accuracy": 0.8758542141230068,
+    "deeplearning_auc_roc": 0.9672127529123238,
+    "mejora_accuracy": -0.07049908770353552,
+    "mejora_auc_roc": -0.018020496300803157,
+    "porcentaje_mejora_accuracy": -7.449552674193273,
+    "porcentaje_mejora_auc_roc": -1.8290588868367497
+  }
+}

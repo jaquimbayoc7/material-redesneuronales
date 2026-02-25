@@ -1,0 +1,96 @@
+{
+  "fecha_ejecucion": "2026-02-24 15:25:57",
+  "problema": {
+    "target": "Propenso_a_Fallar",
+    "clase_0": "No fallo",
+    "clase_1": "Fallo",
+    "descripcion": "Predicción de propensión a fallar en servicios de reparación"
+  },
+  "datos": {
+    "total_registros": 29606,
+    "total_features": 25,
+    "clase_0_total": 16309,
+    "clase_1_total": 13297
+  },
+  "preprocesamiento": {
+    "normalizacion": "MinMaxScaler [0,1]",
+    "oversampling": "RandomOverSampler",
+    "features_engineered": 25
+  },
+  "modelo": {
+    "algoritmo": "XGBoost",
+    "parametros": {
+      "objective": "binary:logistic",
+      "max_depth": 5,
+      "learning_rate": 0.05,
+      "n_estimators": 200,
+      "min_child_weight": 1,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "gamma": 0,
+      "reg_alpha": 0,
+      "reg_lambda": 1,
+      "random_state": 42,
+      "verbosity": 0,
+      "eval_metric": "logloss"
+    }
+  },
+  "splits_evaluados": [
+    "60-40",
+    "70-30",
+    "80-20"
+  ],
+  "resultados": {
+    "60-40": {
+      "accuracy": 0.9437631730216517,
+      "precision": 0.9131287905815197,
+      "recall": 0.9808392412339528,
+      "f1_score": 0.9457736720554273,
+      "auc_roc": 0.98345412125379,
+      "specificity": 0.9066871048093504,
+      "sensitivity": 0.9808392412339528,
+      "confusion_matrix": {
+        "tn": 4732,
+        "fp": 487,
+        "fn": 100,
+        "tp": 5119
+      }
+    },
+    "70-30": {
+      "accuracy": 0.9463533018265423,
+      "precision": 0.9171442215854824,
+      "recall": 0.9813490035769035,
+      "f1_score": 0.9481609479140953,
+      "auc_roc": 0.9852332492131269,
+      "specificity": 0.9113665389527459,
+      "sensitivity": 0.9813490035769035,
+      "confusion_matrix": {
+        "tn": 3568,
+        "fp": 347,
+        "fn": 73,
+        "tp": 3841
+      }
+    },
+    "80-20": {
+      "accuracy": 0.943475761640161,
+      "precision": 0.9114509246088194,
+      "recall": 0.9823687236489076,
+      "f1_score": 0.9455819959417082,
+      "auc_roc": 0.9832817141959237,
+      "specificity": 0.9045977011494253,
+      "sensitivity": 0.9823687236489076,
+      "confusion_matrix": {
+        "tn": 2361,
+        "fp": 249,
+        "fn": 46,
+        "tp": 2563
+      }
+    }
+  },
+  "mejor_modelo": {
+    "split": "70-30",
+    "auc_roc": 0.9852332492131269,
+    "f1_score": 0.9481609479140953,
+    "accuracy": 0.9463533018265423
+  }
+}

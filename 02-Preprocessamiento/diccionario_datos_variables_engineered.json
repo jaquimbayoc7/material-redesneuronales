@@ -1,0 +1,173 @@
+{
+  "Pregunta Investigación": {
+    "pregunta": "¿Cuáles son los factores predictivos que determinan la propensión al fallo en servicios de reparación?",
+    "variable_target": "Propenso_a_Fallar (0: No fallo, 1: Fallo)",
+    "objetivo": "Predecir servicios con alto riesgo de fallo para aplicar estrategias preventivas"
+  },
+  "Variables Originales Importancia": {
+    "servicio_urgente": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "logica": "Indicador si el servicio es urgente. Servicios urgentes pueden tener más presión temporal y riesgo de fallo"
+    },
+    "critico": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "logica": "Indicador de criticidad del servicio. Servicios críticos pueden requerir mayor atención y menos probabilidad de error"
+    },
+    "tipo_trabajo_encoded": {
+      "tipo": "Target Encoding",
+      "rango": "[0, 1]",
+      "logica": "Valor promedio de propensión a fallo por tipo de trabajo. Tipos concretos de trabajos tienen mayor predisposición al fallo"
+    },
+    "tipo_cliente_encoded": {
+      "tipo": "Label Encoding",
+      "rango": "[0, 2]",
+      "logica": "Categoría de cliente codificada. Diferentes tipos de clientes pueden tener diferente complejidad de requerimientos"
+    },
+    "producto_encoded": {
+      "tipo": "Label Encoding",
+      "rango": "[0, n]",
+      "logica": "Tipo de producto codificado. Algunos productos son más defectuosos o complejos de reparar"
+    },
+    "fuente_encoded": {
+      "tipo": "Label Encoding",
+      "rango": "[0, 1]",
+      "logica": "Fuente de derivación del cliente. Diferentes fuentes pueden tener diferentes características de demanda"
+    }
+  },
+  "Variables Engineered - Descripción": {
+    "desc_longitud": {
+      "tipo": "Numérica continua",
+      "rango": "[0, max_chars]",
+      "engineering": "Número de caracteres en la descripción",
+      "logica": "Descripciones más largas pueden indicar problemas complejos con mayor riesgo de fallo. Descripciones cortas pueden ser omisiones"
+    },
+    "desc_num_palabras": {
+      "tipo": "Numérica discreta",
+      "rango": "[0, max_palabras]",
+      "engineering": "Cantidad de palabras en la descripción",
+      "logica": "Correlacionada con longitud. Más detalles en la descripción = problema más complejo = mayor riesgo"
+    },
+    "desc_contiene_instalación": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'instalación'",
+      "logica": "Tareas de instalación son complejas y propensas a errores de compatibilidad. Palabra clave discriminante"
+    },
+    "desc_contiene_problema": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'problema'",
+      "logica": "Presencia de 'problema' indica diagnóstico previo. Puede ser predictor agregado de complejidad"
+    },
+    "desc_contiene_componente": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'componente'",
+      "logica": "Reparaciones que mencionan componentes específicos tienen mayor complejidad técnica"
+    },
+    "desc_contiene_conexión": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'conexión'",
+      "logica": "Problemas de conexión son diagnósticos ambiguos, mayor riesgo de fallo si la causa raíz no se identifica"
+    },
+    "desc_contiene_falla": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'falla'",
+      "logica": "Palabra clave fuertemente discriminante que indica fallo previo y riesgo de fallo"
+    },
+    "desc_contiene_arranque": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'arranque'",
+      "logica": "Problemas de arranque son síntomas superficiales, pueden ocultar problemas más profundos"
+    },
+    "desc_contiene_error": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'error'",
+      "logica": "Presencia de 'error' indica complicación potencial o resultado de diagnóstico fallido"
+    },
+    "desc_contiene_funciona": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'funciona'",
+      "logica": "Puede indicar servicios de ajuste/optimización vs reparación de fallo. Generalmente menor riesgo"
+    },
+    "desc_contiene_revisar": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'revisar'",
+      "logica": "Indica diagnóstico preliminar o falta de claridad. Mayor riesgo por incertidumbre"
+    },
+    "desc_contiene_piezas": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si descripción contiene 'piezas'",
+      "logica": "Necesidad de piezas de reemplazo indica mayor complejidad y dependencia de disponibilidad"
+    },
+    "desc_es_largo": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si desc_longitud > mediana del dataset",
+      "logica": "Binaria derivada. Descripciones largas (> mediana) señalan problemas más complejos"
+    },
+    "desc_muchas_palabras": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "1 si desc_num_palabras > mediana del dataset",
+      "logica": "Binaria derivada. Correlacionada con desc_es_largo. Redundancia controlada para capturar complejidad"
+    }
+  },
+  "Variables Engineered - Interacciones": {
+    "urgente_x_tipo_trabajo": {
+      "tipo": "Numérica continua",
+      "rango": "[0, max_encoded]",
+      "engineering": "servicio_urgente * tipo_trabajo_encoded",
+      "logica": "Captura la INTERACCIÓN entre urgencia del servicio y tipo de trabajo. Servicios urgentes en trabajos de alto riesgo multiplican la propensión a fallo"
+    },
+    "urgente_x_cliente": {
+      "tipo": "Numérica continua",
+      "rango": "[0, max_encoded]",
+      "engineering": "servicio_urgente * tipo_cliente_encoded",
+      "logica": "Captura INTERACCIÓN entre urgencia y tipo de cliente. Clientes exigentes en servicios urgentes = mayor estrés y errores"
+    },
+    "critico_x_tipo_trabajo": {
+      "tipo": "Numérica continua",
+      "rango": "[0, max_encoded]",
+      "engineering": "critico * tipo_trabajo_encoded",
+      "logica": "Captura INTERACCIÓN entre criticidad y tipo de trabajo. Trabajos críticos en categorías de alto riesgo multiplican propensión"
+    },
+    "urgente_desc_largo": {
+      "tipo": "Binaria",
+      "rango": "[0, 1]",
+      "engineering": "servicio_urgente * desc_es_largo",
+      "logica": "Captura INTERACCIÓN entre urgencia temporal y complejidad técnica. Servicios urgentes complejos muy propensos a fallo"
+    }
+  },
+  "Variables Engineered - Composición": {
+    "indice_prioridad": {
+      "tipo": "Numérica discreta",
+      "rango": "[0, 2]",
+      "engineering": "servicio_urgente + critico",
+      "logica": "Índice compuesto de prioridad del servicio. Suma 0=Normal, 1=Urgente O Crítico, 2=Ambos. Mayor índice = Mayor presión = Mayor riesgo"
+    }
+  },
+  "Normalización Aplicada": {
+    "metodo": "MinMaxScaler",
+    "rango_salida": "[0, 1]",
+    "formula": "(X - X_min) / (X_max - X_min)",
+    "ventaja": "Preserva estructura de datos, interpretable, ideal para redes neuronales, mantiene ceros",
+    "aplicacion": "Se aplica DESPUÉS de feature engineering para asegurar coherencia"
+  },
+  "Balanceo Aplicado": {
+    "metodo": "RandomOverSampler",
+    "estrategia": "Replicar aleatoriamente muestras de la clase minoritaria (Fallo=1)",
+    "aplicacion": "Solo en TRAIN SET. TEST SET mantiene desbalance real para evaluación honesta",
+    "resultado_train": "13,047 muestras no-fallo, 13,047 muestras fallo (1:1)",
+    "resultado_test": "3,262 no-fallo, 250 fallo (original 13.05:1)"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "tipo": "VotingClassifier",
+  "voting": "soft",
+  "estimadores": [
+    "xgboost",
+    "rnn",
+    "lightgbm"
+  ],
+  "threshold_optimo": 0.6700000000000004,
+  "metricas_finales": {
+    "accuracy": 0.946753986332574,
+    "auc_roc": 0.9807504598405885,
+    "f1_score": 0.705511811023622
+  }
+}

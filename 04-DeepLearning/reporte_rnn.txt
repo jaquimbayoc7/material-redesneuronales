@@ -1,0 +1,167 @@
+
+================================================================================
+DEEP LEARNING BASELINE - REPORTE DE EVALUACIÓN
+FASE 3: Red Neuronal Profunda vs XGBoost Baseline
+================================================================================
+
+Fecha: 2026-02-24 15:37:37
+
+
+================================================================================
+1. DESCRIPCIÓN DEL PROBLEMA
+================================================================================
+
+Variable Target: Propenso_a_Fallar
+  • Clase 0: No fallo (servicios completados exitosamente)
+  • Clase 1: Fallo (servicios donde ocurrió un fallo)
+
+Objetivo: Optimizar predicción de fallos usando Deep Learning (Red Neuronal)
+Comparar con Baseline XGBoost (Fase 2)
+
+
+================================================================================
+2. DATOS Y PREPARACIÓN
+================================================================================
+
+Dataset Total:
+  • Total registros: 29,606
+  • Features: 25
+  • Clase 0: 16,309
+  • Clase 1: 13,297
+
+Preprocesamiento (Fase 1):
+  • Normalización: MinMaxScaler [0,1]
+  • Oversampling: RandomOverSampler (aplicado en train)
+  • Encoding: Target Encoding + Label Encoding
+
+
+================================================================================
+3. ARQUITECTURA DE RED NEURONAL
+================================================================================
+
+Modelo Secuencial - 5 Capas Densas:
+  Input (25 features)
+    ↓
+  Dense(256) + BatchNorm + ReLU + Dropout(0.4) + L2(0.001)
+    ↓
+  Dense(128) + BatchNorm + ReLU + Dropout(0.3) + L2(0.001)
+    ↓
+  Dense(64) + ReLU + Dropout(0.2)
+    ↓
+  Dense(32) + ReLU + Dropout(0.2)
+    ↓
+  Dense(16) + ReLU
+    ↓
+  Output: Dense(1, Sigmoid) → [0.0, 1.0]
+
+Configuración:
+  • Optimizer: Adam (lr=0.001)
+  • Loss Function: Binary Crossentropy
+  • Batch Size: 32
+  • Epochs: 150 (con Early Stopping)
+  • Early Stopping: patience=15, monitor=val_loss
+  • Reduce LR: factor=0.5, patience=5
+  • Class Weights: {0: 0.6, 1: 1.4}
+  • L2 Regularization: 0.001
+
+
+================================================================================
+4. RESULTADOS EN TEST SET
+================================================================================
+
+Métricas de Evaluación:
+  • Accuracy:    0.8759
+  • Precision:   0.3599
+  • Recall:      0.9560
+  • F1-Score:    0.5230
+  • AUC-ROC:     0.9672
+  • Specificity: 0.8697
+  • Sensitivity: 0.9560
+
+Confusion Matrix:
+  • Verdaderos Negativos (TN): 2,837
+  • Falsos Positivos (FP): 425
+  • Falsos Negativos (FN): 11
+  • Verdaderos Positivos (TP): 239
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      0.87      0.93      3262
+           1       0.36      0.96      0.52       250
+
+    accuracy                           0.88      3512
+   macro avg       0.68      0.91      0.73      3512
+weighted avg       0.95      0.88      0.90      3512
+
+
+================================================================================
+5. COMPARATIVA CON BASELINE (XGBoost - Fase 2)
+================================================================================
+
+Métrica          | DeepLearning | XGBoost  | Diferencia | % Mejora
+─────────────────────────────────────────────────────────────────
+Accuracy         | 0.8759     | 0.9464   | -0.0705     | -7.45%
+Precision        | 0.3599     | 0.9171   | -0.5572     | -60.75%
+Recall           | 0.9560     | 0.9813   | -0.0253     | -2.58%
+F1-Score         | 0.5230     | 0.9482   | -0.4252     | -44.84%
+AUC-ROC          | 0.9672     | 0.9852   | -0.0180     | -1.83%
+
+
+================================================================================
+6. ENTRENAMIENTO Y CONVERGENCIA
+================================================================================
+
+Épocas Entrenadas: 75
+Mejor Epoch (Val Loss): 60
+Early Stopping activado: Sí (patience=15)
+
+Loss Final:
+  • Train: 0.1755
+  • Val:   0.1272
+
+Accuracy Final:
+  • Train: 0.9093
+  • Val:   0.9883
+
+AUC Final:
+  • Train: 0.9718
+  • Val:   0.0000
+
+
+================================================================================
+7. ANÁLISIS E INTERPRETACIÓN
+================================================================================
+
+✅ Fortalezas del Modelo Deep Learning:
+   • Red neuronal profunda captura patrones complejos
+   • Batch Normalization estabiliza el entrenamiento
+   • Dropout previene overfitting
+   • Class weights balancean desbalance de clases
+   • Early stopping evita entrenamiento excesivo
+
+⚠️  Considera:
+   • Comparar tiempo de inference vs XGBoost
+   • Validar estabilidad en datos reales
+   • Considerar ensemble si aún mejora disponible
+
+🏆 Veredicto:
+   DeepLearning vs Baseline:
+   • Mejora en Accuracy: -0.0705 (-7.45%)
+   • Mejora en AUC-ROC: -0.0180 (-1.83%)
+
+
+================================================================================
+8. PRÓXIMOS PASOS
+================================================================================
+
+1. Validar modelo en datos reales de producción
+2. Comparar tiempo de inference con XGBoost
+3. Considerar ensemble (XGBoost + DeepLearning)
+4. Realizar tuning adicional de hiperparámetros
+5. Implementar modelo en pipeline de producción
+
+
+================================================================================
+FIN DEL REPORTE
+================================================================================
